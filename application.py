@@ -1,8 +1,7 @@
 from flask import Flask, request, render_template
-from chain_builder import get_sentence
 import cPickle as pickle
-from markov_dict import MarkovDict
-from markov_chain import MarkovChain
+from _code.markov_dict import MarkovDict
+from _code.markov_chain import MarkovChain
 
 
 application = Flask(__name__)
@@ -30,6 +29,6 @@ def get_statement():
     word = request.args['q']
     sentence = mc.run(word, 2, 1)
     return sentence
-    
+
 if __name__ == '__main__':
     application.run()
