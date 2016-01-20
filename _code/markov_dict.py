@@ -15,8 +15,8 @@ class MarkovDict(object):
     def __init__(self, fname, chain_len):
         # Load text and get rid of line breaks
         with open(fname, 'r') as f:
-            self.corpus_txt = f.read().replace('\n', ' ')
-        
+            self.corpus_txt = f.read().decode('utf-8').replace('\n', ' ')
+
         self.chain_len = chain_len
         self._fit()
         self.word_list = list(itertools.chain(*self.f_sent))
@@ -41,7 +41,7 @@ class MarkovDict(object):
         # Get the sentences from the corpus
         sent_list_of_str = sent_tokenize(self.corpus_txt.lower())
         # Capitalize and save the punctuation from the end
-        sent_cap = [(sent.capitalize()[:-1], sent[-1]) for sent in sent_list_of_str] 
+        sent_cap = [(sent.capitalize()[:-1], sent[-1]) for sent in sent_list_of_str]
         # Word tokenize to keep contractions, add back on punc
         self.f_sent = [tokenizer.tokenize(word_tuple[0]) + [word_tuple[1]] for word_tuple in sent_cap]
         # Reverse those sentences
