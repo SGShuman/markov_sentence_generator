@@ -30,7 +30,8 @@ class MarkovDict(object):
             b_sent=self.b_sent,
             f_dict=self.f_dict,
             b_dict=self.b_dict,
-            stats=self.stats
+            stats=self.stats,
+            fname=fname
             )
 
     def _fit(self):
@@ -84,9 +85,6 @@ class MarkovDict(object):
                         else:
                             dictionary[key_to_insert].append([value_to_insert, 1])
         return dictionary
-
-
-
 
     def to_pkl(self, fname):
         '''Pickle the api so it can be used without running'''

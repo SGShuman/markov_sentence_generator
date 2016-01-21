@@ -4,10 +4,13 @@ from nltk.corpus import stopwords
 from nltk.tokenize.regexp import WhitespaceTokenizer
 from string import ascii_uppercase
 from collections import Counter
+from _code.truecase import TrueCase
 
 class MarkovChain(object):
 	'''Create a MarkovChain from the given dictionary and parameters,
-	run() returns a sentence given a seed'''
+	run() returns a sentence given a seed
+
+	markov_dict should be a MarkovDict().api dictionary'''
 
 	def __init__(self, markov_dict, priority_list, not_found_list, neighbor_dict):
 		self.markov_dict = markov_dict
@@ -20,6 +23,7 @@ class MarkovChain(object):
 		self.lower_word_list = [w.lower() for w in self.word_list]
 		# Count of word freq, maintaining case
 		self.word_dict_count = Counter(self.word_list)
+		self.truecaser = TrueCase(self.markov_dict['fname'])
 
 	def _get_input(self, input_phrase):
 		'''Take in the raw input from the user'''
@@ -44,7 +48,7 @@ class MarkovChain(object):
 			seed = np.random.choice(priority_words)
 		elif content:
 			seed = np.random.choice(content)
-		else:  # Final option is a random word 
+		else:  # Final option is a random word
 		    seed = np.random.choice(content)
 
 		# if the words is not in text, find neighbors
@@ -61,7 +65,7 @@ class MarkovChain(object):
 	def _get_neighbor(self, seed):
 		'''Return the nearest neighbor to seed from a database'''
 		neighbors = self.neighbor_dict[seed]
-		
+
 		good_neighbors = []
 		for word in neighbors:
 			if self._in_text(word):  # Only pick a neighbor if in text
@@ -97,7 +101,7 @@ class MarkovChain(object):
 
 			# Choose a value with probability, 0 index gives words from tuple
 			value = values[np.random.choice(len(values), p=probabilities)][0]
-						
+
 			# Add the beginning of value to the text
 			words_from_value = value[:self.value_gram_size]
 			# If value ends a sent or begins a sent, use the whole thing
@@ -143,45 +147,6 @@ class MarkovChain(object):
 
 		return sent
 
-	def _true_case(self, sent):
-		'''Return a truce_case sentence to look well formatted'''
-		sent = self.tokenizer.tokenize(sent)
-		output = []
-
-		# If it appears capital more often, use that case
-		for word in sent:
-			capital = 0
-			lower = 0
-			all_caps = 0
-			try:
-				lower += self.word_dict_count[word]
-			except:
-				lower += 0
-			try:
-				capital += self.word_dict_count[word.capitalize()]
-			except:
-				capital += 0
-			try:
-				all_caps += self.word_dict_count[word.upper()]
-			except:
-				all_caps += 0
-
-			# find max of those three options
-			idx = np.argsort([all_caps, capital, lower])[-1]
-
-			# If not found in dictionary, find original case
-			if (all_caps + capital + lower) == 0:
-				i = self.lower_word_list.index(word.lower())
-				output.append(self.word_list[i])
-			elif idx == 0:
-				output.append(word.upper())
-			elif idx == 1:
-				output.append(word.capitalize())
-			else:
-				output.append(word)
-		
-		return ' '.join(output)
-
 	def run(self, input_text, key_gram_size=2, value_gram_size=1):
 		'''Return a sentence based on gram_size
 		Larger gram_size is more deterministic phrases
@@ -195,6 +160,5 @@ class MarkovChain(object):
 		sent = self._get_sentence(seed)
 		# Fix space before punc
 		sent = sent[:-2] + sent[-1]
-		sent = self._true_case(sent)
+		sent = self.truecaser.truecase(sent)
 		return sent
-
