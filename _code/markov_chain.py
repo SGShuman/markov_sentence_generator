@@ -52,7 +52,7 @@ class MarkovChain(object):
 		elif content:
 			seed = np.random.choice(content)
 		else:  # Final option is a random word
-		    seed = np.random.choice(content)
+		    seed = np.random.choice(word_list)
 
 		# if the words is not in text, find neighbors
 		if not self._in_text(seed):

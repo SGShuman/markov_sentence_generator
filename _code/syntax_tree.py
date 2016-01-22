@@ -3,6 +3,7 @@ from nltk.tokenize import sent_tokenize
 from collections import Counter
 from nltk.tokenize.regexp import WhitespaceTokenizer
 import itertools
+import cPickle as pickle
 
 class SyntaxTree(object):
     '''Return a syntax object
@@ -20,7 +21,14 @@ class SyntaxTree(object):
         self.sent_list_of_str = [x.replace(')','') for x in str_lst]
 
         # Get annotations for all sentences
-        self.annotations_list = self._fit(self.sent_list_of_str, dep_parse)
+        fpath = self._get_pkl_fname(fname)
+        # Load from pkl if already fit once (saves two minutes)
+        try:
+            with open(fpath, 'r') as f:
+                self.annotations_list = pickle.load(f)['annotations_list']
+                print 'Loading from file'
+        except:
+            self.annotations_list = self._fit(self.sent_list_of_str, dep_parse)
         # Get syntax_list feature, among others available, x is dict
         self.syntax_list = [x['syntax_tree'] for x in self.annotations_list]
         self.pos_list = [x['pos'] for x in self.annotations_list]
@@ -46,6 +54,8 @@ class SyntaxTree(object):
         grammar_counter=self.grammar_counter,
         fname=fname
         )
+
+        self.to_pkl(fpath)
 
     def _fit(self, sent_list_of_str, dep_parse):
         '''Return annotations from a list of strings, as a list of dicts
@@ -110,6 +120,12 @@ class SyntaxTree(object):
             tmp = [y for x, y in sent]
             sent_struct.append(tuple(tmp))
         self.grammar_counter = Counter(sent_struct)
+
+    def _get_pkl_fname(self, fname):
+        '''Return the filename that would have been pkled automatically'''
+        fname = fname.split('.')
+        fname = ''.join(fname[:-1]) + '_markov_dict.pkl'
+        return fname
 
     def to_pkl(self, fname):
         '''Pickle the api so it can be used without running'''
