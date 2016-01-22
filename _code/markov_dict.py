@@ -1,24 +1,35 @@
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize.regexp import WhitespaceTokenizer
 import cPickle as pickle
+from _code.syntax_tree import SyntaxSent
 import itertools
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
+from collections import Counter
 
 class MarkovDict(object):
     '''Contains Markov Dict for both forward and backwards
 
     Input: filename of the corpus, len of Markov Chain
     Output: use md.api to access info
-    use md.wordcloud() for a wordcloud over any corpus'''
+    use md.wordcloud() for a wordcloud over any corpus
+    gtype=naive is a dict without syntax
+    gtype=syntax is a dict with syntax included'''
 
-    def __init__(self, fname, chain_len):
+    def __init__(self, fname, chain_len, gtype='naive'):
         # Load text and get rid of line breaks
         with open(fname, 'r') as f:
             self.corpus_txt = f.read().decode('utf-8').replace('\n', ' ')
+        self.gtype = gtype
 
         self.chain_len = chain_len
-        self._fit()
+        if gtype == 'syntax':
+            print 'Fitting Syntax Model'
+            self.SyntaxSent = SyntaxSent(fname)
+            print 'Syntax Model Complete'
+            self._fit_syntax()
+        else:
+            self._fit()
         self.word_list = list(itertools.chain(*self.f_sent))
         self.stats = self._make_stats()
         self.api = dict(
@@ -50,6 +61,13 @@ class MarkovDict(object):
         self.f_dict = self._make_dictionary(self.f_sent)
         self.b_dict = self._make_dictionary(self.b_sent)
 
+    def _fit_syntax(self):
+        '''Fit sentences that have already been split into syntax components'''
+        self.f_sent = self.SyntaxSent.chunk_list
+        self.b_sent = [list(reversed(chunk_list)) for chunk_list in self.f_sent]
+        self.f_dict = self._make_dictionary(self.f_sent)
+        self.b_dict = self._make_dictionary(self.b_sent)
+
     def _make_dictionary(self, sentences):
         '''Return a markov dictionary from a list of sentences
 
@@ -65,9 +83,9 @@ class MarkovDict(object):
                     if word_idx <= (sen_len - self.chain_len - 1):
                         key_end = word_idx + self.chain_len - 1
                         if word_idx == 0:
-                            key_to_insert = (['.'] + [sentence[i] for i in xrange(self.chain_len - 1)])
+                            key_to_insert = ['.'] + [sentence[i] for i in xrange(self.chain_len - 1)]
                         else:
-                            key_to_insert = ([sentence[i] for i in xrange(word_idx-1, key_end)])
+                            key_to_insert = [sentence[i] for i in xrange(word_idx-1, key_end)]
 
                         value_to_insert = sentence[key_end:key_end+self.chain_len]
                         key_to_insert = tuple(key_to_insert)
@@ -76,14 +94,9 @@ class MarkovDict(object):
                     # Put both key an item in dictionary
                     if key_to_insert not in dictionary:
                         # The 1 serves as a counter for frequency
-                        dictionary[key_to_insert] = [[value_to_insert, 1]]
+                        dictionary[key_to_insert] = [value_to_insert]
                     else:
-                        list_of_values=[x[0] for x in dictionary[key_to_insert]]
-                        if value_to_insert in list_of_values:
-                            index = list_of_values.index(value_to_insert)
-                            dictionary[key_to_insert][index][1] += 1
-                        else:
-                            dictionary[key_to_insert].append([value_to_insert, 1])
+                        dictionary[key_to_insert] += [value_to_insert]
         return dictionary
 
     def to_pkl(self, fname):
@@ -96,8 +109,13 @@ class MarkovDict(object):
         stats = dict(
             num_sentences=len(self.f_sent),
             num_words=sum([len(sent) for sent in self.f_sent]),
-            unq_words=len(set(self.word_list))
+            unq_words=len(set(self.word_list)),
             )
+        # Get the distribution of value lengths
+        if self.gtype == 'syntax':
+            val_list = [val for key, val in self.f_dict.iteritems()]
+            len_list = [len(lst) for lst in val_list]
+            stats['dist_of_val_len'] = Counter(len_list)
         return stats
 
     def wordcloud(self, max_font=40, scaling=.5):

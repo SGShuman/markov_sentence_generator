@@ -1,5 +1,7 @@
 from nltk.tokenize.regexp import WhitespaceTokenizer
 from collections import Counter
+import numpy as np
+from string import punctuation
 
 class TrueCase(object):
     '''True case from a corpus'''
@@ -14,9 +16,8 @@ class TrueCase(object):
 
     def truecase(self, sent):
         '''Return a true_cased sentence to look well formatted'''
-        if type(sent) == str:
+        if isinstance(sent, basestring):
             sent = self.tokenizer.tokenize(sent)
-
         output = []
         # If it appears capital more often, use that case
         for word in sent:
@@ -41,8 +42,15 @@ class TrueCase(object):
 
             # If not found in dictionary, find original case
             if (all_caps + capital + lower) == 0:
-                i = self.lower_word_list.index(word.lower())
-                output.append(self.word_list[i])
+                try:
+                    i = self.lower_word_list.index(word.lower())
+                    output.append(self.word_list[i])
+                except:
+                    try:
+                        i = self.lower_word_list.index(word.lower().strip(punctuation))
+                        output.append(self.word_list[i])
+                    except:
+                        output.append(word)
             elif idx == 0:
                 output.append(word.upper())
             elif idx == 1:
@@ -50,7 +58,10 @@ class TrueCase(object):
             else:
                 output.append(word)
 
-        return ' '.join(output)
+        sent_str = ' '.join(output)
+        sent_str = sent_str[0].upper() + sent_str[1:]
+
+        return sent_str
 
     def bulk_truecase(self, list_sent):
         '''Return a list of true_cased strings from an iterable'''

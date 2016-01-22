@@ -2,7 +2,6 @@ import re
 import numpy as np
 from nltk.corpus import stopwords
 from nltk.tokenize.regexp import WhitespaceTokenizer
-from string import ascii_uppercase
 from collections import Counter
 from _code.truecase import TrueCase
 
@@ -89,31 +88,27 @@ class MarkovChain(object):
 		'''Return a string of words generated from seed
 		Iterate through dictionary until a period or capital is reached'''
 		key = self._generate_key(seed, dir_dict)
-		text = ' '.join(key[-self.key_gram_size:])
+		text = list(key[-self.key_gram_size:])
 
 		while (not self._check_punc(text)) & (not self._check_upper(text)):
 			# Values is a list of lists, each sublist is a tuple
 			# If key in dictionary, run, else, use last word of key as seed
 			values = dir_dict[key]
 
-			probabilities = np.array([value[1] for value in values])
-			probabilities = probabilities / float(np.sum(probabilities))
-
-			# Choose a value with probability, 0 index gives words from tuple
-			value = values[np.random.choice(len(values), p=probabilities)][0]
+			# Choose a value with probability equal to distribution in corpus
+			value = np.random.choice(values)
 
 			# Add the beginning of value to the text
 			words_from_value = value[:self.value_gram_size]
 			# If value ends a sent or begins a sent, use the whole thing
 			val_string = ''.join(value)
 			if self._check_punc(val_string) | self._check_upper(val_string):
-				text += ' ' + ' '.join(value)
+				text += value
 			else:
-				text += ' ' + ' '.join(words_from_value)
+				text += words_from_value
 
 			# Create new lookup key
-			key = text.split()
-			key = tuple(key[-self.markov_dict['chain_len']:])
+			key = tuple(text[-self.markov_dict['chain_len']:])
 		return text
 
 	def _rev_sentence(self, sent):
@@ -123,16 +118,29 @@ class MarkovChain(object):
 
 	def _check_upper(self, text):
 		'''Return True if uppercase letter in text'''
-		for char in text:
-			if char in ascii_uppercase:
-				return True
+		if isinstance(text, basestring):
+			for char in text:
+				if char.isupper():
+					return True
+
+		else:
+			for word in text:
+				for char in word:
+					if char.isupper():
+						return True
 		return False
 
 	def _check_punc(self, text):
 		'''Return True if uppercase letter in text'''
-		for char in text:
-			if char in '.?!':
-				return True
+		if isinstance(text, basestring):
+			for char in text:
+				if char in '.?!':
+					return True
+		else:
+			for word in text:
+				for char in word:
+					if char in '.?!':
+						return True
 		return False
 
 	def _get_sentence(self, seed):
@@ -140,10 +148,10 @@ class MarkovChain(object):
 		f_text = self._run_chain(seed, self.markov_dict['f_dict'])
 		b_text = self._run_chain(seed, self.markov_dict['b_dict'])
 		# b_text is backwards obviously, so turn it around
-		b_text = self._rev_sentence(b_text)
+		b_text = list(reversed(b_text))
 
 		# Only include seed once
-		sent = b_text[:-len(seed)-1] + ' ' + f_text
+		sent = b_text[:-1] + f_text
 
 		return sent
 
@@ -153,12 +161,18 @@ class MarkovChain(object):
 		gram_size cannot be larger than chain_len'''
 		self.key_gram_size = min(key_gram_size, self.markov_dict['chain_len'])
 		self.value_gram_size = min(value_gram_size, self.markov_dict['chain_len'])
+		while self.key_gram_size + self.value_gram_size < self.markov_dict['chain_len']:
+			self.value_gram_size += 1
+
 		seed = self._get_input(input_text)
 		# If seed not in corpus and no neighbor found, return random sent
 		if not seed:
 			return np.random.choice(self.not_found_list)
 		sent = self._get_sentence(seed)
+
+		# Turn into string for output
+		sent_str = ' '.join(sent)
 		# Fix space before punc
-		sent = sent[:-2] + sent[-1]
-		sent = self.truecaser.truecase(sent)
-		return sent
+		sent_str = sent_str[:-2] + sent_str[-1]
+		output = self.truecaser.truecase(sent_str)
+		return output
