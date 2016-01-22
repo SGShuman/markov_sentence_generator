@@ -131,7 +131,7 @@ class MarkovChain(object):
 			text += words_from_value
 
 			# Create new lookup key
-			key = tuple(text[-self.markov_dict['chain_len']:])
+			key = tuple(text[-self.markov_dict['gram_size']:])
 		return text
 
 	def _get_sentence(self, seed):
@@ -162,10 +162,10 @@ class MarkovChain(object):
 	def run(self, input_text, key_gram_size=2, value_gram_size=1):
 		'''Return a sentence based on gram_size
 		Larger gram_size is more deterministic phrases
-		gram_size cannot be larger than chain_len'''
-		self.key_gram_size = min(key_gram_size, self.markov_dict['chain_len'])
-		self.value_gram_size = min(value_gram_size, self.markov_dict['chain_len'])
-		while self.key_gram_size + self.value_gram_size < self.markov_dict['chain_len']:
+		gram_size cannot be larger than gram_size'''
+		self.key_gram_size = min(key_gram_size, self.markov_dict['gram_size'])
+		self.value_gram_size = min(value_gram_size, self.markov_dict['gram_size'])
+		while self.key_gram_size + self.value_gram_size < self.markov_dict['gram_size']:
 			self.value_gram_size += 1
 
 		seed = self._get_input(input_text)
@@ -184,8 +184,8 @@ class MarkovChain(object):
 if __name__ == '__main__':
 	print 'Fitting Dictionary'
 	fname = 'data/obama_corpus.txt'
-	chain_len = int(raw_input('Set markov chain length: '))
-	md = MarkovDict(fname, chain_len, gtype='syntax_pos')
+	gram_size = int(raw_input('Set markov gram_size: '))
+	md = MarkovDict(fname, gram_size, gtype='syntax_pos')
 
 	# print 'Opening Neighbors'
 	# with open('data/neighbours.pkl') as f:

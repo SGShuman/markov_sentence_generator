@@ -18,13 +18,13 @@ class MarkovDict(object):
     gtype=pos is dict with part of speech
     gtype=syntax_pos is both'''
 
-    def __init__(self, fname, chain_len, gtype='naive'):
+    def __init__(self, fname, gram_size, gtype='naive'):
         # Load text and get rid of line breaks
         with open(fname, 'r') as f:
             self.corpus_txt = f.read().decode('utf-8').replace('\n', ' ')
         self.gtype = gtype
 
-        self.chain_len = chain_len
+        self.gram_size = gram_size
         if gtype != 'naive':
             print 'Fitting Syntax Model'
             self.SyntaxTree = SyntaxTree(fname)
@@ -36,7 +36,7 @@ class MarkovDict(object):
         self.stats = self._make_stats()
         self.api = dict(
             corpus_txt=self.corpus_txt,
-            chain_len=self.chain_len,
+            gram_size=self.gram_size,
             word_list=self.word_list,
             unq_words=set(self.word_list),
             f_sent=self.f_sent,
@@ -79,7 +79,7 @@ class MarkovDict(object):
         for sent in iter_list:
             tmp = [tuple([tup[0].lower(), tup[1:]]) for tup in sent]
             self.f_sent.append(tmp)
-        
+
         self.b_sent = [list(reversed(chunk_list)) for chunk_list in self.f_sent]
         self.f_dict = self._make_dictionary(self.f_sent)
         self.b_dict = self._make_dictionary(self.b_sent)
@@ -87,18 +87,18 @@ class MarkovDict(object):
     def _make_dictionary(self, sentences):
         '''Return a markov dictionary from a list of sentences
 
-        Keys are tuples of len chain_len; Values are lists of lists
+        Keys are tuples of len gram_size; Values are lists of lists
         Each sub_list contains a tuple of words that follow the key'''
 
         dictionary = {}
         for sentence in sentences:
             sen_len = len(sentence)
             for word_idx in xrange(sen_len):
-                if word_idx <= (sen_len - self.chain_len):
-                    key_end = word_idx + self.chain_len
+                if word_idx <= (sen_len - self.gram_size):
+                    key_end = word_idx + self.gram_size
                     key_to_insert = [sentence[i] for i in xrange(word_idx, key_end)]
 
-                    value_to_insert = sentence[key_end:key_end+self.chain_len]
+                    value_to_insert = sentence[key_end:key_end+self.gram_size]
                     key_to_insert = tuple(key_to_insert)
                     value_to_insert = tuple(value_to_insert)
 
@@ -128,9 +128,9 @@ class MarkovDict(object):
             stats['dist_of_val_len'] = Counter(len_list)
         return stats
 
-    def wordcloud(self, max_font=40, scaling=.5):
+    def wordcloud(self, **args):
         '''Display a wordcloud from the corpus'''
-        wordcloud = WordCloud(max_font_size=max_font, relative_scaling=scaling)\
+        wordcloud = WordCloud(**args)\
                     .generate(self.corpus_txt)
         plt.figure()
         plt.imshow(wordcloud)

@@ -11,10 +11,10 @@ class SyntaxChain(object):
     gtype=syntax_pos gives both'''
 
     def __init__(self, fname, gtype='syntax'):
-        self.syntax_dict = syntax_dict
         self.tokenizer = WhitespaceTokenizer()
         self.truecaser = TrueCase(fname)
         self.SyntaxTree = SyntaxTree(fname)
+        self.gtype = gtype
         if self.gtype == 'syntax':
             self.tup_list = self.SyntaxTree.chunk_list
         elif self.gtype == 'pos':
