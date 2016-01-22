@@ -27,8 +27,10 @@ class SyntaxTree(object):
             with open(fpath, 'r') as f:
                 self.annotations_list = pickle.load(f)['annotations_list']
                 print 'Loading from file'
+                save = False
         except:
             self.annotations_list = self._fit(self.sent_list_of_str, dep_parse)
+            save = True
         # Get syntax_list feature, among others available, x is dict
         self.syntax_list = [x['syntax_tree'] for x in self.annotations_list]
         self.pos_list = [x['pos'] for x in self.annotations_list]
@@ -44,8 +46,8 @@ class SyntaxTree(object):
         chunk_pos_list=self.chunk_pos_list,
         fname=fname
         )
-
-        self.to_pkl(fpath)
+        if save:
+            self.to_pkl(fpath)
 
     def _get_chunk_pos(self, chunk_list, pos_list):
         '''Return a list of three tuples (word, chunk, pos)'''
