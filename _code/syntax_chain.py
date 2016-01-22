@@ -2,18 +2,29 @@ import numpy as np
 from nltk.tokenize.regexp import WhitespaceTokenizer
 from _code.truecase import TrueCase
 from string import punctuation
+from _code.syntax_tree import SyntaxTree
 
 class SyntaxChain(object):
-    '''Return random sentences with reasonable syntax'''
+    '''Return random sentences with reasonable syntax
+    gtype=syntax gives syntax tags
+    gtype=pos gives part of speech tags
+    gtype=syntax_pos gives both'''
 
-    def __init__(self, syntax_dict):
+    def __init__(self, fname, gtype='syntax'):
         self.syntax_dict = syntax_dict
         self.tokenizer = WhitespaceTokenizer()
-        self.truecaser = TrueCase(self.syntax_dict['fname'])
+        self.truecaser = TrueCase(fname)
+        self.SyntaxTree = SyntaxTree(fname)
+        if self.gtype == 'syntax':
+            self.tup_list = self.SyntaxTree.chunk_list
+        elif self.gtype == 'pos':
+            self.tup_list = self.SyntaxTree.pos_list
+        else:
+            self.tup_list = self.SyntaxTree.chunk_pos_list
 
     def _pick_structure(self, min_appearances=2):
         '''Return a tuple of tags indicating basic sent structure'''
-        grammar_dict = self.syntax_dict['grammar_counter']
+        grammar_dict = self.SyntaxTree.get_grammar(self.tup_list)
 
         # Get a list of the most common structures
         choice_list = []
@@ -25,8 +36,9 @@ class SyntaxChain(object):
     def _fill_words(self, struct):
         '''Return a list of words based on struct'''
         sent = []
+        _, _, tag_w_words = self.SyntaxTree.get_tools(self.tup_list)
         for tag in struct:
-            word_list = self.syntax_dict['tag_w_words'][tag]
+            word_list = tag_w_words[tag]
             sent.append(np.random.choice(word_list))
         return sent
 

@@ -33,9 +33,7 @@ class SyntaxTree(object):
         self.syntax_list = [x['syntax_tree'] for x in self.annotations_list]
         self.pos_list = [x['pos'] for x in self.annotations_list]
         self.chunk_list = [x['chunk'] for x in self.annotations_list]
-        self._get_word_pos()
-        self._get_word_tag()
-        self._get_grammar()
+        self.chunk_pos_list = self._get_chunk_pos(self.chunk_list, self.pos_list)
 
         self.api = dict(
         annotations_list=self.annotations_list,
@@ -43,19 +41,22 @@ class SyntaxTree(object):
         pos_list=self.pos_list,
         corpus_txt=self.corpus_txt,
         chunk_list=self.chunk_list,
-        flat_tag_list=self.flat_tag_list,
-        flat_pos_list=self.flat_pos_list,
-        pos_dict=self.pos_dict,
-        tag_dict=self.tag_dict,
-        words_w_pos=self.words_w_pos,
-        words_w_tag=self.words_w_tag,
-        pos_w_words=self.pos_w_words,
-        tag_w_words=self.tag_w_words,
-        grammar_counter=self.grammar_counter,
+        chunk_pos_list=self.chunk_pos_list,
         fname=fname
         )
 
         self.to_pkl(fpath)
+
+    def _get_chunk_pos(self, chunk_list, pos_list):
+        '''Return a list of three tuples (word, chunk, pos)'''
+        chunk_pos_list = []
+        for chunk_sent, pos_sent in zip(chunk_list, pos_list):
+            tmp = []
+            for chunk, pos in zip(chunk_sent, pos_sent):
+                #            word      grammar  part of speech
+                tmp.append((chunk[0], chunk[1], pos[1]))
+            chunk_pos_list.append(tmp)
+        return chunk_pos_list
 
     def _fit(self, sent_list_of_str, dep_parse):
         '''Return annotations from a list of strings, as a list of dicts
@@ -63,68 +64,38 @@ class SyntaxTree(object):
         annotator = Annotator()
         return annotator.getBatchAnnotations(sent_list_of_str, dep_parse)
 
-    def _get_word_pos(self):
-        '''Return word pos in a variety of formats'''
+    def get_tools(self, sent_list):
+        '''Return sent_list in a variety of formats'''
 
-        self.flat_pos_list = list(itertools.chain(*self.pos_list))
-
-        # Count unique tuples
-        self.pos_dict = Counter(self.flat_pos_list)
-
-        # Get dictionary with key=word, value=list[pos]
-        # Tags repeat, so choosing from them maintains probability
-        self.words_w_pos = {}
-        for word, pos in self.flat_pos_list:
-            if word in self.words_w_pos:
-                self.words_w_pos[word] += [pos]
-            else:
-                self.words_w_pos[word] = [pos]
-
-        # Get dictionary with key=tag, value=list[words]
-        self.pos_w_words = {}
-        for word, pos in self.flat_pos_list:
-            if pos in self.pos_w_words:
-                self.pos_w_words[pos] += [word]
-            else:
-                self.pos_w_words[pos] = [word]
-
-    def _get_word_tag(self):
-        '''Return word tag in a variety of formats'''
-
-        self.flat_tag_list = list(itertools.chain(*self.chunk_list))
+        flat_list = list(itertools.chain(*sent_list))
 
         # Count unique tuples
-        self.tag_dict = Counter(self.flat_tag_list)
-
-        # Get dictionary with key=word, value=list[tag]
-        # Tags repeat, so choosing from them maintains probability
-        self.words_w_tag = {}
-        for word, tag in self.flat_tag_list:
-            if word in self.words_w_tag:
-                self.words_w_tag[word] += [tag]
-            else:
-                self.words_w_tag[word] = [tag]
+        count_dict = Counter(flat_list)
 
         # Get dictionary with key=tag, value=list[words]
-        self.tag_w_words = {}
-        for word, tag in self.flat_tag_list:
-            if tag in self.tag_w_words:
-                self.tag_w_words[tag] += [word]
+        tag_w_words = {}
+        for tup in flat_list:
+            # tup[0] is word, tup[1:] is tuple of tags
+            if tup[1:] in tag_w_words:
+                tag_w_words[tup[1:]] += [tup[0]]
             else:
-                self.tag_w_words[tag] = [word]
+                tag_w_words[tup[1:]] = [tup[0]]
+        return flat_list, count_dict, tag_w_words
 
-    def _get_grammar(self):
+    def get_grammar(self, sent_list):
         '''Return a counter dictionary of sentence structures'''
         sent_struct = []
-        for sent in self.chunk_list:
-            tmp = [y for x, y in sent]
+        for sent in sent_list:
+            tmp = []
+            for tup in sent:
+                tmp.append(tup[1:])
             sent_struct.append(tuple(tmp))
-        self.grammar_counter = Counter(sent_struct)
+        grammar_counter = Counter(sent_struct)
+        return grammar_counter
 
     def _get_pkl_fname(self, fname):
         '''Return the filename that would have been pkled automatically'''
-        fname = fname.split('.')
-        fname = ''.join(fname[:-1]) + '_markov_dict.pkl'
+        fname = fname.rsplit(".", 1)[0] + '_markov_dict.pkl'
         return fname
 
     def to_pkl(self, fname):

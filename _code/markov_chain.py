@@ -7,6 +7,7 @@ from collections import Counter
 from _code.truecase import TrueCase
 from _code.markov_dict import MarkovDict
 from string import punctuation
+from nltk.tokenize import sent_tokenize
 
 class MarkovChain(object):
 	'''Create a MarkovChain from the given dictionary and parameters,
@@ -14,12 +15,10 @@ class MarkovChain(object):
 
 	markov_dict should be a MarkovDict().api dictionary'''
 
-	def __init__(self, markov_dict, priority_list, not_found_list, neighbor_dict):
+	def __init__(self, markov_dict, priority_list=None, not_found_list=None, neighbor_dict=None):
 		self.markov_dict = markov_dict
 		self.gtype = self.markov_dict['gtype']
 		self.stop_words = set(stopwords.words('english'))
-		self.priority_list = priority_list
-		self.not_found_list = not_found_list
 		self.neighbor_dict = neighbor_dict
 		self.tokenizer = WhitespaceTokenizer()
 		self.word_list = self.tokenizer.tokenize(self.markov_dict['corpus_txt'])
@@ -27,6 +26,26 @@ class MarkovChain(object):
 		# Count of word freq, maintaining case
 		self.word_dict_count = Counter(self.word_list)
 		self.truecaser = TrueCase(self.markov_dict['fname'])
+
+		# Create priority and not_found_list if none were entered
+		if priority_list:
+			self.priority_list = priority_list
+		else:
+			self._make_priority()
+		if not_found_list:
+			self.not_found_list = not_found_list
+		else:
+			self._make_not_found()
+
+	def _make_priority(self, n=10):
+		'''Return the n most common words in the corpus'''
+		priority_dict = Counter(self.lower_word_list)
+		self.priority_list = [key for key, val in priority_dict.most_common(n)]
+
+	def _make_not_found(self, n=10):
+		'''Return the n most common sentences in the corpus'''
+		not_found_dict = Counter(sent_tokenize(self.markov_dict['corpus_txt']))
+		self.not_found_list = [key for key, val in not_found_dict.most_common(n)]
 
 	def _get_input(self, input_phrase):
 		'''Take in the raw input from the user'''
@@ -67,6 +86,9 @@ class MarkovChain(object):
 
 	def _get_neighbor(self, seed):
 		'''Return the nearest neighbor to seed from a database'''
+		if not self.neighbor_dict:
+			return None
+
 		neighbors = self.neighbor_dict[seed]
 
 		good_neighbors = []
@@ -127,7 +149,7 @@ class MarkovChain(object):
 
 	def _get_sentence_str(self, sent):
 		'''Return a string representation of a list'''
-		if self.gtype == 'syntax':
+		if self.gtype != 'naive':
 			sent = [w[0] for w in sent]
 		text = ' '.join(sent)
 
@@ -163,11 +185,11 @@ if __name__ == '__main__':
 	print 'Fitting Dictionary'
 	fname = 'data/obama_corpus.txt'
 	chain_len = int(raw_input('Set markov chain length: '))
-	md = MarkovDict(fname, chain_len, gtype='syntax')
+	md = MarkovDict(fname, chain_len, gtype='syntax_pos')
 
-	print 'Opening Neighbors'
-	with open('data/neighbours.pkl') as f:
-	    neighbor_dict = pickle.load(f)
+	# print 'Opening Neighbors'
+	# with open('data/neighbours.pkl') as f:
+	#     neighbor_dict = pickle.load(f)
 
 	print 'Fitting Chain'
 	priority_list = ['america', 'iran', 'iraq', 'health', 'terrorism']
@@ -178,7 +200,7 @@ if __name__ == '__main__':
 	    'I don\'t oppose all wars. What I am opposed to is a dumb war. What I am opposed to is a rash war.',
 	    'There\'s not a liberal America and a conservative America - there\'s the United States of America.'
 	]
-	mc = MarkovChain(md.api, priority_list, not_found_list, neighbor_dict)
+	mc = MarkovChain(md.api)
 
 	while True:
 		seed = raw_input('Enter a word or phrase to start: ')

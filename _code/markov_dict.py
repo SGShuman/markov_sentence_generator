@@ -14,7 +14,9 @@ class MarkovDict(object):
     Output: use md.api to access info
     use md.wordcloud() for a wordcloud over any corpus
     gtype=naive is a dict without syntax
-    gtype=syntax is a dict with syntax included'''
+    gtype=syntax is a dict with syntax included
+    gtype=pos is dict with part of speech
+    gtype=syntax_pos is both'''
 
     def __init__(self, fname, chain_len, gtype='naive'):
         # Load text and get rid of line breaks
@@ -23,9 +25,9 @@ class MarkovDict(object):
         self.gtype = gtype
 
         self.chain_len = chain_len
-        if gtype == 'syntax':
+        if gtype != 'naive':
             print 'Fitting Syntax Model'
-            self.SyntaxSent = SyntaxTree(fname)
+            self.SyntaxTree = SyntaxTree(fname)
             print 'Syntax Model Complete'
             self._fit_syntax()
         else:
@@ -64,10 +66,20 @@ class MarkovDict(object):
 
     def _fit_syntax(self):
         '''Fit sentences that have already been split into syntax components'''
+        # Choose iterable based on type of dictionary available
+        if self.gtype == 'syntax':
+            iter_list = self.SyntaxTree.chunk_list
+        elif self.gtype == 'pos':
+            iter_list = self.SyntaxTree.pos_list
+        else:
+            iter_list = self.SyntaxTree.chunk_pos_list
+
+        # Lowercase the words
         self.f_sent = []
-        for sent in self.SyntaxSent.chunk_list:
-            tmp = [(word.lower(), tag) for word, tag in sent]
+        for sent in iter_list:
+            tmp = [tuple([tup[0].lower(), tup[1:]]) for tup in sent]
             self.f_sent.append(tmp)
+        
         self.b_sent = [list(reversed(chunk_list)) for chunk_list in self.f_sent]
         self.f_dict = self._make_dictionary(self.f_sent)
         self.b_dict = self._make_dictionary(self.b_sent)
@@ -110,7 +122,7 @@ class MarkovDict(object):
             unq_words=len(set(self.word_list)),
             )
         # Get the distribution of value lengths
-        if self.gtype == 'syntax':
+        if self.gtype != 'naive':
             val_list = [val for key, val in self.f_dict.iteritems()]
             len_list = [len(lst) for lst in val_list]
             stats['dist_of_val_len'] = Counter(len_list)
