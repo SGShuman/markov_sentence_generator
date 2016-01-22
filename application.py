@@ -7,7 +7,7 @@ from _code.markov_chain import MarkovChain
 application = Flask(__name__)
 
 with open('data/neighbours.pkl') as f:
-    neighbor_list = pickle.load(f)
+    neighbor_dict = pickle.load(f)
 
 priority_list = ['america', 'democracy', 'terrorism']
 not_found_list = [
@@ -19,7 +19,7 @@ not_found_list = [
 ]
 
 md = MarkovDict('data/obama_corpus.txt', 3)
-mc = MarkovChain(md.api, priority_list, not_found_list, neighbor_list)
+mc = MarkovChain(md.api, priority_list, not_found_list, neighbor_dict)
 
 
 # Main page

@@ -4,7 +4,7 @@ from collections import Counter
 from nltk.tokenize.regexp import WhitespaceTokenizer
 import itertools
 
-class SyntaxSent(object):
+class SyntaxTree(object):
     '''Return a syntax object
     Annotator comes from https://github.com/biplab-iitb/practNLPTools'''
 
@@ -12,7 +12,13 @@ class SyntaxSent(object):
         # Get corpus
         with open(fname, 'r') as f:
             self.corpus_txt = f.read().decode('utf-8').replace('\n', ' ')
-        self.sent_list_of_str = sent_tokenize(self.corpus_txt)
+
+        str_lst = sent_tokenize(self.corpus_txt)
+
+        # (, ) break the annotator
+        str_lst = [x.replace('(', '') for x in str_lst]
+        self.sent_list_of_str = [x.replace(')','') for x in str_lst]
+
         # Get annotations for all sentences
         self.annotations_list = self._fit(self.sent_list_of_str, dep_parse)
         # Get syntax_list feature, among others available, x is dict
@@ -98,6 +104,7 @@ class SyntaxSent(object):
                 self.tag_w_words[tag] = [word]
 
     def _get_grammar(self):
+        '''Return a counter dictionary of sentence structures'''
         sent_struct = []
         for sent in self.chunk_list:
             tmp = [y for x, y in sent]

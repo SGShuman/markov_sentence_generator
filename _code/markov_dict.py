@@ -1,7 +1,7 @@
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize.regexp import WhitespaceTokenizer
 import cPickle as pickle
-from _code.syntax_tree import SyntaxSent
+from _code.syntax_tree import SyntaxTree
 import itertools
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
@@ -25,7 +25,7 @@ class MarkovDict(object):
         self.chain_len = chain_len
         if gtype == 'syntax':
             print 'Fitting Syntax Model'
-            self.SyntaxSent = SyntaxSent(fname)
+            self.SyntaxSent = SyntaxTree(fname)
             print 'Syntax Model Complete'
             self._fit_syntax()
         else:
@@ -42,7 +42,8 @@ class MarkovDict(object):
             f_dict=self.f_dict,
             b_dict=self.b_dict,
             stats=self.stats,
-            fname=fname
+            fname=fname,
+            gtype=gtype
             )
 
     def _fit(self):
@@ -63,7 +64,10 @@ class MarkovDict(object):
 
     def _fit_syntax(self):
         '''Fit sentences that have already been split into syntax components'''
-        self.f_sent = self.SyntaxSent.chunk_list
+        self.f_sent = []
+        for sent in self.SyntaxSent.chunk_list:
+            tmp = [(word.lower(), tag) for word, tag in sent]
+            self.f_sent.append(tmp)
         self.b_sent = [list(reversed(chunk_list)) for chunk_list in self.f_sent]
         self.f_dict = self._make_dictionary(self.f_sent)
         self.b_dict = self._make_dictionary(self.b_sent)
@@ -72,31 +76,25 @@ class MarkovDict(object):
         '''Return a markov dictionary from a list of sentences
 
         Keys are tuples of len chain_len; Values are lists of lists
-        Each sub_list contains a tuple of words that follow the key
-        and a frequency of appearance'''
+        Each sub_list contains a tuple of words that follow the key'''
 
         dictionary = {}
         for sentence in sentences:
-            if sentence:  # Ensure not an empty list
-                sen_len = len(sentence)
-                for word_idx in xrange(sen_len):
-                    if word_idx <= (sen_len - self.chain_len - 1):
-                        key_end = word_idx + self.chain_len - 1
-                        if word_idx == 0:
-                            key_to_insert = ['.'] + [sentence[i] for i in xrange(self.chain_len - 1)]
-                        else:
-                            key_to_insert = [sentence[i] for i in xrange(word_idx-1, key_end)]
+            sen_len = len(sentence)
+            for word_idx in xrange(sen_len):
+                if word_idx <= (sen_len - self.chain_len):
+                    key_end = word_idx + self.chain_len
+                    key_to_insert = [sentence[i] for i in xrange(word_idx, key_end)]
 
-                        value_to_insert = sentence[key_end:key_end+self.chain_len]
-                        key_to_insert = tuple(key_to_insert)
-                        value_to_insert = tuple(value_to_insert)
+                    value_to_insert = sentence[key_end:key_end+self.chain_len]
+                    key_to_insert = tuple(key_to_insert)
+                    value_to_insert = tuple(value_to_insert)
 
-                    # Put both key an item in dictionary
-                    if key_to_insert not in dictionary:
-                        # The 1 serves as a counter for frequency
-                        dictionary[key_to_insert] = [value_to_insert]
-                    else:
-                        dictionary[key_to_insert] += [value_to_insert]
+                # Put both key an item in dictionary
+                if key_to_insert not in dictionary:
+                    dictionary[key_to_insert] = [value_to_insert]
+                else:
+                    dictionary[key_to_insert] += [value_to_insert]
         return dictionary
 
     def to_pkl(self, fname):

@@ -1,9 +1,12 @@
 import re
 import numpy as np
+import cPickle as pickle
 from nltk.corpus import stopwords
 from nltk.tokenize.regexp import WhitespaceTokenizer
 from collections import Counter
 from _code.truecase import TrueCase
+from _code.markov_dict import MarkovDict
+from string import punctuation
 
 class MarkovChain(object):
 	'''Create a MarkovChain from the given dictionary and parameters,
@@ -13,6 +16,7 @@ class MarkovChain(object):
 
 	def __init__(self, markov_dict, priority_list, not_found_list, neighbor_dict):
 		self.markov_dict = markov_dict
+		self.gtype = self.markov_dict['gtype']
 		self.stop_words = set(stopwords.words('english'))
 		self.priority_list = priority_list
 		self.not_found_list = not_found_list
@@ -59,7 +63,7 @@ class MarkovChain(object):
 
 	def _in_text(self, word):
 		'''Return true if word is in the corpus'''
-		return word in self.markov_dict['unq_words']
+		return word.lower() in set(self.lower_word_list)
 
 	def _get_neighbor(self, seed):
 		'''Return the nearest neighbor to seed from a database'''
@@ -78,75 +82,41 @@ class MarkovChain(object):
 		'''Return key from a chosen seed'''
 		key_list = []
 		for key in dir_dict:
-			# Look at the last gram_size words in the key
-			# First word in that gram_size phrase must match seed
-			if seed == key[-self.key_gram_size]:
+			# Look at the last key_gram_size words in the key
+			# First word in that key_gram_size len phrase must match seed
+			if seed in key[-self.key_gram_size]:
 				key_list.append(key)
 		return key_list[np.random.choice(len(key_list))]
 
 	def _run_chain(self, seed, dir_dict):
-		'''Return a string of words generated from seed
+		'''Return a list of words generated from seed
 		Iterate through dictionary until a period or capital is reached'''
 		key = self._generate_key(seed, dir_dict)
 		text = list(key[-self.key_gram_size:])
 
-		while (not self._check_punc(text)) & (not self._check_upper(text)):
-			# Values is a list of lists, each sublist is a tuple
-			# If key in dictionary, run, else, use last word of key as seed
+		# If not end/begin of sent, run
+		while True:
+			# Values is a list of lists
 			values = dir_dict[key]
 
 			# Choose a value with probability equal to distribution in corpus
-			value = np.random.choice(values)
+			value = values[np.random.choice(len(values))]
+			if (() in value) | (value == ()): # End condition
+				break
 
-			# Add the beginning of value to the text
+			# Add a value_gram_size phrase to the text
 			words_from_value = value[:self.value_gram_size]
-			# If value ends a sent or begins a sent, use the whole thing
-			val_string = ''.join(value)
-			if self._check_punc(val_string) | self._check_upper(val_string):
-				text += value
-			else:
-				text += words_from_value
+			text += words_from_value
 
 			# Create new lookup key
 			key = tuple(text[-self.markov_dict['chain_len']:])
 		return text
 
-	def _rev_sentence(self, sent):
-		'''Return a reverse a string sentence'''
-		word_list = list(reversed(self.tokenizer.tokenize(sent)))
-		return ' '.join(word_list)
-
-	def _check_upper(self, text):
-		'''Return True if uppercase letter in text'''
-		if isinstance(text, basestring):
-			for char in text:
-				if char.isupper():
-					return True
-
-		else:
-			for word in text:
-				for char in word:
-					if char.isupper():
-						return True
-		return False
-
-	def _check_punc(self, text):
-		'''Return True if uppercase letter in text'''
-		if isinstance(text, basestring):
-			for char in text:
-				if char in '.?!':
-					return True
-		else:
-			for word in text:
-				for char in word:
-					if char in '.?!':
-						return True
-		return False
-
 	def _get_sentence(self, seed):
 		'''Return a sentence given a seed'''
 		f_text = self._run_chain(seed, self.markov_dict['f_dict'])
 		b_text = self._run_chain(seed, self.markov_dict['b_dict'])
+
 		# b_text is backwards obviously, so turn it around
 		b_text = list(reversed(b_text))
 
@@ -154,6 +124,18 @@ class MarkovChain(object):
 		sent = b_text[:-1] + f_text
 
 		return sent
+
+	def _get_sentence_str(self, sent):
+		'''Return a string representation of a list'''
+		if self.gtype == 'syntax':
+			sent = [w[0] for w in sent]
+		text = ' '.join(sent)
+
+		punc_w_space = [' ' + x for x in punctuation]
+		for i in xrange(len(text)-1):
+			if text[i:i+2] in punc_w_space:
+				text = text[:i] + text[i+1:]
+		return text
 
 	def run(self, input_text, key_gram_size=2, value_gram_size=1):
 		'''Return a sentence based on gram_size
@@ -171,8 +153,38 @@ class MarkovChain(object):
 		sent = self._get_sentence(seed)
 
 		# Turn into string for output
-		sent_str = ' '.join(sent)
+		sent_str = self._get_sentence_str(sent)
+
 		# Fix space before punc
-		sent_str = sent_str[:-2] + sent_str[-1]
 		output = self.truecaser.truecase(sent_str)
 		return output
+
+if __name__ == '__main__':
+	print 'Fitting Dictionary'
+	fname = 'data/obama_corpus.txt'
+	chain_len = int(raw_input('Set markov chain length: '))
+	md = MarkovDict(fname, chain_len, gtype='syntax')
+
+	print 'Opening Neighbors'
+	with open('data/neighbours.pkl') as f:
+	    neighbor_dict = pickle.load(f)
+
+	print 'Fitting Chain'
+	priority_list = ['america', 'iran', 'iraq', 'health', 'terrorism']
+	not_found_list = [
+	    'Change will not come if we wait for some other person or some other time. We are the ones we\'ve been waiting for. We are the change that we seek.',
+	    'If you\'re walking down the right path and you\'re willing to keep walking, eventually you\'ll make progress.',
+	    'The future rewards those who press on. I don\'t have time to feel sorry for myself. I don\'t have time to complain. I\'m going to press on.',
+	    'I don\'t oppose all wars. What I am opposed to is a dumb war. What I am opposed to is a rash war.',
+	    'There\'s not a liberal America and a conservative America - there\'s the United States of America.'
+	]
+	mc = MarkovChain(md.api, priority_list, not_found_list, neighbor_dict)
+
+	while True:
+		seed = raw_input('Enter a word or phrase to start: ')
+		print mc.run(seed, 1, 1)
+		another = raw_input('Keep playing? (y/n): ')
+		if another == 'n':
+			break
+		else:
+			continue
