@@ -39,13 +39,32 @@ class MarkovChain(object):
 
 	def _make_priority(self, n=10):
 		'''Return the n most common words in the corpus'''
-		priority_dict = Counter(self.lower_word_list)
+		# Remove stop_words
+		content = [w for w in self.lower_word_list if w not in self.stop_words]
+		# Remove words that are only punctuation
+		content_no_punc = []
+		for word in content:
+			tmp = False
+			for char in word:
+				if char not in punctuation:
+					tmp = True
+				else:
+					continue
+			if tmp:
+				content_no_punc.append(word)
+
+		priority_dict = Counter(content_no_punc)
 		self.priority_list = [key for key, val in priority_dict.most_common(n)]
 
-	def _make_not_found(self, n=10):
+	def _make_not_found(self, n=15):
 		'''Return the n most common sentences in the corpus'''
 		not_found_dict = Counter(sent_tokenize(self.markov_dict['corpus_txt']))
-		self.not_found_list = [key for key, val in not_found_dict.most_common(n)]
+		common_sent = [key for key, val in not_found_dict.most_common(n)]
+		self.not_found_list = []
+		# Might fill with small stuff, don't let that happen
+		for sent in common_sent:
+			if len(sent) > 5:
+				self.not_found_list.append(sent)
 
 	def _get_input(self, input_phrase):
 		'''Take in the raw input from the user'''

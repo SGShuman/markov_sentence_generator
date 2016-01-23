@@ -5,6 +5,8 @@ from _code.syntax_tree import SyntaxTree
 import itertools
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
 from collections import Counter
 
 class MarkovDict(object):
@@ -135,4 +137,19 @@ class MarkovDict(object):
         plt.figure()
         plt.imshow(wordcloud)
         plt.axis("off")
+        plt.show()
+
+    def plot_dist(self, log=True):
+        '''Display a histogram of log value lengths from the dictionary'''
+        df = pd.DataFrame.from_dict(self.stats['dist_of_val_len'], orient='index')
+        if log:
+            tmp = df.apply(lambda x: np.log(x))
+            tmp.hist()
+            xlabel = 'Log Number of Values'
+        else:
+            xlabel = 'Number of Values'
+            df.hist()
+        plt.xlabel(xlabel)
+        plt.ylabel('Number of Keys')
+        plt.title('Distribution of Value Lengths for unique Keys')
         plt.show()

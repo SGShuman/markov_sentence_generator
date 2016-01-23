@@ -28,9 +28,14 @@ class SyntaxChain(object):
 
         # Get a list of the most common structures
         choice_list = []
+        max_val = 0
         for key, value in grammar_dict.iteritems():
+            max_val = max([max_val, value])
             if value >= min_appearances:
                 choice_list.append(key)
+        if not choice_list:
+            print 'Set min_appearances below %' % max_val
+            return None
         return np.random.choice(choice_list)
 
     def _fill_words(self, struct):
@@ -56,8 +61,11 @@ class SyntaxChain(object):
 
     def run(self, min_appearances=2):
         struct = self._pick_structure(min_appearances)
-        sent = self._fill_words(struct)
-        sent_str = ' '.join(sent)
-        sent_str = self._clean_sent(sent_str)
-        # sent_str = self.truecaser.truecase(sent_str)
+        if struct:
+            sent = self._fill_words(struct)
+            sent_str = ' '.join(sent)
+            sent_str = self._clean_sent(sent_str)
+            sent_str = self.truecaser.truecase(sent_str)
+        else:
+            sent_str = 'Try Again!'
         return sent_str

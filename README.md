@@ -17,7 +17,7 @@ MarkovDict can be tuned using the chain_len parameter.  Chain length is the numb
 
 MarkovChain then offers you a choice, a naive version of the chain will not take into account syntax parsing and only give context based on word presence.  A syntax version will take syntax into account.
 
-MarkovChain has two tuning parameters that are put into the run method. Key Gram Size determines how much of the contextual phrase to pull from.  This is a bit complex.  If you set MarkovDict.chain_len to a small number, then context will be small and many possible values will follow each key.  Key Gram Size determines how much of the context being searched for to put in the return text.  Value Gram Size looks at the dictionary for that context and pulls a list of possible following phrases.  It chooses one of those phrases and takes Value Gram Size words from it.  The new key is now the Chain Length final words of the return text.
+MarkovChain has two tuning parameters that are put into the run method. Key Gram Size determines how much of the contextual phrase to pull from.  This is a bit complex.  If you set MarkovDict.gram_size to a small number, then context will be small and many possible values will follow each key.  Key Gram Size determines how much of the context being searched for to put in the return text.  Value Gram Size looks at the dictionary for that context and pulls a list of possible following phrases.  It chooses one of those phrases and takes Value Gram Size words from it.  The new key is now the Chain Length final words of the return text.
 
 Run code.markov_chain to get a sense of how it works.
 
