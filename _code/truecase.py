@@ -58,7 +58,9 @@ class TrueCase(object):
             else:
                 output.append(word)
 
-        sent_str = ' '.join(output)
+        # sometimes sentence delimiters get picked up in the middle of words
+        # they should only go at the end
+        sent_str = ' '.join([x.strip('!?.') for x in output[:-1]) + output[-1]
         sent_str = sent_str[0].upper() + sent_str[1:]
 
         return sent_str

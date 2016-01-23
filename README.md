@@ -7,9 +7,7 @@ Ever wanted to sound like your favorite celebrity, politician, or just nonsensic
 Markov Sentence Generator uses Markov chains and syntax parsing to choose contextually appropriate words and form them into sentences.  Based on a seed that you put into the generator, the model can generate a sentence from a document or set of documents.
 
 ### Detailed Explanation
-The module is composed of three classes: SyntaxTree, MarkovDict and MarkovChain.  SyntaxTree creates the syntax parsing, MarkovDict creates the contextual dictionaries that MarkovChain puts all that together to form sentences.
-
-SyntaxTree is untunable but does contain additional more info than in used here for future work.
+The module is composed of four main classes: SyntaxTree, SyntaxChain, MarkovDict and MarkovChain.  SyntaxTree creates the syntax parsing, MarkovDict creates the contextual dictionaries from the syntactic elements that MarkovChain puts all that together to form sentences.
 
 (SyntaxChain runs an even more naive model, it takes sentence grammar structures and fills in words that fit that grammar structure ignoring other context.  It can get pretty silly.)
 
@@ -21,10 +19,12 @@ MarkovChain has two tuning parameters that are put into the run method. Key Gram
 
 Run code.markov_chain to get a sense of how it works.
 
+You can also use the exploratory ipython notebook to get a feel for some of the properties.
+
 I find the best chain lengths are 1 or 2.  3 produces sentences from the text.  Syntax model takes about 2 minutes to fit on the example text of 302KB.
 
 ```python
 python _code.markov_chain.py
 ```
 
-Finally the TrueCaser class looks at a corpus and then truecases sentences.
+Finally the TrueCase class looks at a corpus and then truecases sentences.
