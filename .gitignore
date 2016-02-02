@@ -63,3 +63,5 @@ target/
 
 #.ipynb_checkpoint
 *.ipynb_checkpoint*
+
+data/corpus_markov_dict.pkl
