@@ -25,7 +25,7 @@ class TrueCase(object):
             lower = 0
             all_caps = 0
             try:
-                lower += self.word_dict_count[word]
+                lower += self.word_dict_count[word.lower()]
             except:
                 lower += 0
             try:
@@ -60,7 +60,7 @@ class TrueCase(object):
 
         # sometimes sentence delimiters get picked up in the middle of words
         # they should only go at the end
-        sent_str = ' '.join([x.strip('!?.') for x in output[:-1]) + output[-1]
+        sent_str = ' '.join([x.strip('!?.') for x in output[:-1]]) + ' ' + output[-1]
         sent_str = sent_str[0].upper() + sent_str[1:]
 
         return sent_str

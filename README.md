@@ -17,14 +17,21 @@ MarkovChain then offers you a choice, a naive version of the chain will not take
 
 MarkovChain has two tuning parameters that are put into the run method. Key Gram Size determines how much of the contextual phrase to pull from.  This is a bit complex.  If you set MarkovDict.gram_size to a small number, then context will be small and many possible values will follow each key.  Key Gram Size determines how much of the context being searched for to put in the return text.  Value Gram Size looks at the dictionary for that context and pulls a list of possible following phrases.  It chooses one of those phrases and takes Value Gram Size words from it.  The new key is now the Chain Length final words of the return text.
 
-Run code.markov_chain to get a sense of how it works.
+Run code.markov_chain to get a sense of how it works.  Syntax model takes about 2 minutes to fit on the example text of 302KB.
 
 You can also use the exploratory ipython notebook to get a feel for some of the properties.
 
-I find the best chain lengths are 1 or 2.  3 produces sentences from the text.  Syntax model takes about 2 minutes to fit on the example text of 302KB.
+I find the best parameters are gram_size=3, gtype=syntax_pos, key_gram_size=1, value_gram_size=2. It can get sillier from there so it depends on what you are going for.
+
+If you want to play with it locally run:
 
 ```python
 python _code.markov_chain.py
+```
+
+I find its easier to play with the app.
+```python
+python application.py
 ```
 
 Finally the TrueCase class looks at a corpus and then truecases sentences.
