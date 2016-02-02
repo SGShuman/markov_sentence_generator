@@ -13,7 +13,7 @@ def main():
 @app.route("/recommend", methods=['POST'])
 def recommend():
     user_input = str(request.form['seed'])
-    sent = mc.run(user_input, 1, 2)
+    sent = mc.run(user_input, 2, 1)
 
     return render_template('index.html', recommend=True, sent=sent)
 
