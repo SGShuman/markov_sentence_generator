@@ -1,0 +1,285 @@
+Retrieving logs...
+============= i-48d06dc8 ==============
+-------------------------------------
+/var/log/eb-version-deployment.log
+-------------------------------------
+2016-02-03 04:45:28,075 [INFO] Found the latest version manifest file <Key: elasticbeanstalk-us-east-1-495533138545,resources/environments/e-gpwm39q2ew/_runtime/versions/manifest_1454474509454> from bucket elasticbeanstalk-us-east-1-495533138545 and prefix resources/environments/e-gpwm39q2ew/_runtime/versions/
+2016-02-03 04:45:28,127 [INFO] Downloaded the manifest file to /tmp/version_file_manifest
+2016-02-03 04:45:29,033 [INFO] Downloaded version label app-83b5-160202_204016 from s3 key <Key: elasticbeanstalk-us-east-1-495533138545,resources/environments/e-gpwm39q2ew/_runtime/_versions/obamasotugenerator/app-83b5-160202_204016>
+2016-02-03 04:57:40,226 [INFO] Version manifest file name already known. The latest version manifest file key is resources/environments/e-gpwm39q2ew/_runtime/versions/manifest_1454475454677
+2016-02-03 04:57:40,284 [INFO] Downloaded the manifest file to /tmp/version_file_manifest
+2016-02-03 04:57:41,004 [INFO] Downloaded version label app-83b5-160202_205618 from s3 key <Key: elasticbeanstalk-us-east-1-495533138545,resources/environments/e-gpwm39q2ew/_runtime/_versions/obamasotugenerator/app-83b5-160202_205618>
+2016-02-03 05:01:59,181 [INFO] Version manifest file name already known. The latest version manifest file key is resources/environments/e-gpwm39q2ew/_runtime/versions/manifest_1454475713796
+2016-02-03 05:01:59,231 [INFO] Downloaded the manifest file to /tmp/version_file_manifest
+2016-02-03 05:01:59,892 [INFO] Downloaded version label app-8d6d-160202_210037 from s3 key <Key: elasticbeanstalk-us-east-1-495533138545,resources/environments/e-gpwm39q2ew/_runtime/_versions/obamasotugenerator/app-8d6d-160202_210037>
+2016-02-03 05:08:55,828 [INFO] Version manifest file name already known. The latest version manifest file key is resources/environments/e-gpwm39q2ew/_runtime/versions/manifest_1454476130279
+2016-02-03 05:08:55,882 [INFO] Downloaded the manifest file to /tmp/version_file_manifest
+2016-02-03 05:08:56,465 [INFO] Downloaded version label app-391b-160202_210731 from s3 key <Key: elasticbeanstalk-us-east-1-495533138545,resources/environments/e-gpwm39q2ew/_runtime/_versions/obamasotugenerator/app-391b-160202_210731>
+2016-02-03 05:15:07,133 [INFO] Version manifest file name already known. The latest version manifest file key is resources/environments/e-gpwm39q2ew/_runtime/versions/manifest_1454476501425
+2016-02-03 05:15:07,214 [INFO] Downloaded the manifest file to /tmp/version_file_manifest
+2016-02-03 05:15:07,905 [INFO] Downloaded version label app-527f-160202_211313 from s3 key <Key: elasticbeanstalk-us-east-1-495533138545,resources/environments/e-gpwm39q2ew/_runtime/_versions/obamasotugenerator/app-527f-160202_211313>
+2016-02-03 05:26:52,679 [INFO] Version manifest file name already known. The latest version manifest file key is resources/environments/e-gpwm39q2ew/_runtime/versions/manifest_1454477207782
+2016-02-03 05:26:52,868 [INFO] Downloaded the manifest file to /tmp/version_file_manifest
+2016-02-03 05:26:53,562 [INFO] Downloaded version label app-7840-160202_212530 from s3 key <Key: elasticbeanstalk-us-east-1-495533138545,resources/environments/e-gpwm39q2ew/_runtime/_versions/obamasotugenerator/app-7840-160202_212530>
+2016-02-03 05:38:14,444 [INFO] Version manifest file name already known. The latest version manifest file key is resources/environments/e-gpwm39q2ew/_runtime/versions/manifest_1454477889091
+2016-02-03 05:38:14,496 [INFO] Downloaded the manifest file to /tmp/version_file_manifest
+2016-02-03 05:38:15,201 [INFO] Downloaded version label app-521a-160202_213650 from s3 key <Key: elasticbeanstalk-us-east-1-495533138545,resources/environments/e-gpwm39q2ew/_runtime/_versions/obamasotugenerator/app-521a-160202_213650>
+
+
+
+-------------------------------------
+/var/log/httpd/error_log
+-------------------------------------
+[Wed Feb 03 05:01:01.429153 2016] [auth_digest:notice] [pid 2711] AH01757: generating secret for digest authentication ...
+[Wed Feb 03 05:01:01.429803 2016] [lbmethod_heartbeat:notice] [pid 2711] AH02282: No slotmem from mod_heartmonitor
+[Wed Feb 03 05:01:01.429843 2016] [:warn] [pid 2711] mod_wsgi: Compiled for Python/2.7.9.
+[Wed Feb 03 05:01:01.429848 2016] [:warn] [pid 2711] mod_wsgi: Runtime using Python/2.7.10.
+[Wed Feb 03 05:01:01.431303 2016] [mpm_prefork:notice] [pid 2711] AH00163: Apache/2.4.16 (Amazon) mod_wsgi/3.5 Python/2.7.10 configured -- resuming normal operations
+[Wed Feb 03 05:01:01.431317 2016] [core:notice] [pid 2711] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+
+
+
+-------------------------------------
+/opt/python/log/supervisord.log
+-------------------------------------
+2016-02-03 04:45:37,369 CRIT Supervisor running as root (no user in config file)
+2016-02-03 04:45:37,393 INFO RPC interface 'supervisor' initialized
+2016-02-03 04:45:37,394 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2016-02-03 04:45:37,394 INFO supervisord started with pid 2632
+2016-02-03 04:45:38,396 INFO spawned: 'httpd' with pid 2711
+2016-02-03 04:45:39,397 INFO success: httpd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+
+
+
+-------------------------------------
+/var/log/httpd/access_log
+-------------------------------------
+172.31.49.96 - - [03/Feb/2016:05:03:25 +0000] "GET / HTTP/1.1" 200 161 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.97 Safari/537.36"
+172.31.49.96 - - [03/Feb/2016:05:03:44 +0000] "GET / HTTP/1.1" 200 161 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.97 Safari/537.36"
+::1 - - [03/Feb/2016:05:04:49 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.16 (Amazon) mod_wsgi/3.5 Python/2.7.10 (internal dummy connection)"
+::1 - - [03/Feb/2016:05:05:00 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.16 (Amazon) mod_wsgi/3.5 Python/2.7.10 (internal dummy connection)"
+172.31.9.226 - - [03/Feb/2016:05:09:14 +0000] "GET / HTTP/1.1" 200 161 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.97 Safari/537.36"
+172.31.49.96 - - [03/Feb/2016:05:12:05 +0000] "GET /arequipa/lineas-de-telefonia-movil-7/ HTTP/1.1" 404 235 "-" "Mozilla/5.0 (compatible; AhrefsBot/5.0; +http://ahrefs.com/robot/)"
+172.31.49.96 - - [03/Feb/2016:05:15:36 +0000] "GET / HTTP/1.1" 200 161 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.97 Safari/537.36"
+172.31.9.226 - - [03/Feb/2016:05:29:12 +0000] "GET / HTTP/1.1" 200 161 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.97 Safari/537.36"
+172.31.9.226 - - [03/Feb/2016:05:29:17 +0000] "GET / HTTP/1.1" 200 161 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.97 Safari/537.36"
+172.31.9.226 - - [03/Feb/2016:05:29:17 +0000] "GET /favicon.ico HTTP/1.1" 404 209 "http://obamasotugenerator-dev.elasticbeanstalk.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.97 Safari/537.36"
+::1 - - [03/Feb/2016:05:30:18 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.16 (Amazon) mod_wsgi/3.5 Python/2.7.10 (internal dummy connection)"
+::1 - - [03/Feb/2016:05:30:23 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.16 (Amazon) mod_wsgi/3.5 Python/2.7.10 (internal dummy connection)"
+::1 - - [03/Feb/2016:05:30:24 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.16 (Amazon) mod_wsgi/3.5 Python/2.7.10 (internal dummy connection)"
+::1 - - [03/Feb/2016:05:30:41 +0000] "OPTIONS * HTTP/1.0" 200 - "-" "Apache/2.4.16 (Amazon) mod_wsgi/3.5 Python/2.7.10 (internal dummy connection)"
+
+
+
+-------------------------------------
+/var/log/eb-activity.log
+-------------------------------------
+  Recreated directory /opt/elasticbeanstalk/deploy/appsource.
+[2016-02-03T05:38:13.917Z] INFO  [30206] - [Application update/AppDeployStage0/InfraWriteApp2] : Starting activity...
+[2016-02-03T05:38:14.307Z] INFO  [30206] - [Application update/AppDeployStage0/InfraWriteApp2/Infra-WriteApplication2] : Starting activity...
+[2016-02-03T05:38:14.308Z] INFO  [30206] - [Application update/AppDeployStage0/InfraWriteApp2/Infra-WriteApplication2/Infra-WriteApplication2] : Starting activity...
+[2016-02-03T05:38:14.347Z] INFO  [30206] - [Application update/AppDeployStage0/InfraWriteApp2/Infra-WriteApplication2/Infra-WriteApplication2/Command 01downloadVersion] : Starting activity...
+[2016-02-03T05:38:15.211Z] INFO  [30206] - [Application update/AppDeployStage0/InfraWriteApp2/Infra-WriteApplication2/Infra-WriteApplication2/Command 01downloadVersion] : Completed activity.
+[2016-02-03T05:38:15.211Z] INFO  [30206] - [Application update/AppDeployStage0/InfraWriteApp2/Infra-WriteApplication2/Infra-WriteApplication2/Command 02deleteVersionDownloadScriptFile] : Starting activity...
+[2016-02-03T05:38:15.226Z] INFO  [30206] - [Application update/AppDeployStage0/InfraWriteApp2/Infra-WriteApplication2/Infra-WriteApplication2/Command 02deleteVersionDownloadScriptFile] : Completed activity.
+[2016-02-03T05:38:15.226Z] INFO  [30206] - [Application update/AppDeployStage0/InfraWriteApp2/Infra-WriteApplication2/Infra-WriteApplication2] : Completed activity.
+[2016-02-03T05:38:15.226Z] INFO  [30206] - [Application update/AppDeployStage0/InfraWriteApp2/Infra-WriteApplication2] : Completed activity.
+[2016-02-03T05:38:15.251Z] INFO  [30206] - [Application update/AppDeployStage0/InfraWriteApp2] : Completed activity.
+[2016-02-03T05:38:15.251Z] INFO  [30206] - [Application update/AppDeployStage0/EbExtensionPreBuild] : Starting activity...
+[2016-02-03T05:38:15.530Z] INFO  [30206] - [Application update/AppDeployStage0/EbExtensionPreBuild/Infra-EmbeddedPreBuild] : Starting activity...
+[2016-02-03T05:38:15.530Z] INFO  [30206] - [Application update/AppDeployStage0/EbExtensionPreBuild/Infra-EmbeddedPreBuild] : Completed activity.
+[2016-02-03T05:38:15.546Z] INFO  [30206] - [Application update/AppDeployStage0/EbExtensionPreBuild] : Completed activity.
+[2016-02-03T05:38:15.546Z] INFO  [30206] - [Application update/AppDeployStage0/AppDeployPreHook] : Starting activity...
+[2016-02-03T05:38:15.547Z] INFO  [30206] - [Application update/AppDeployStage0/AppDeployPreHook/01new.py] : Starting activity...
+[2016-02-03T05:38:15.908Z] INFO  [30206] - [Application update/AppDeployStage0/AppDeployPreHook/01new.py] : Completed activity.
+[2016-02-03T05:38:15.908Z] INFO  [30206] - [Application update/AppDeployStage0/AppDeployPreHook/02unzip.py] : Starting activity...
+[2016-02-03T05:38:17.476Z] INFO  [30206] - [Application update/AppDeployStage0/AppDeployPreHook/02unzip.py] : Completed activity. Result:
+  Archive:  /opt/elasticbeanstalk/deploy/appsource/source_bundle
+  521a6836ac4b5890acf37ed4d001814618214bd3
+    inflating: /opt/python/ondeck/app/.gitignore  
+    inflating: /opt/python/ondeck/app/README.md  
+     creating: /opt/python/ondeck/app/_code/
+   extracting: /opt/python/ondeck/app/_code/__init__.py  
+    inflating: /opt/python/ondeck/app/_code/markov_chain.py  
+    inflating: /opt/python/ondeck/app/_code/markov_dict.py  
+    inflating: /opt/python/ondeck/app/_code/syntax_chain.py  
+    inflating: /opt/python/ondeck/app/_code/syntax_tree.py  
+    inflating: /opt/python/ondeck/app/_code/truecase.py  
+    inflating: /opt/python/ondeck/app/application.py  
+     creating: /opt/python/ondeck/app/data/
+    inflating: /opt/python/ondeck/app/data/corpus.txt  
+    inflating: /opt/python/ondeck/app/data/neighbours.pkl  
+    inflating: /opt/python/ondeck/app/data/obama_corpus.txt  
+    inflating: /opt/python/ondeck/app/data/obama_corpus_markov_dict.pkl  
+    inflating: /opt/python/ondeck/app/data/sanders_corpus.txt  
+    inflating: /opt/python/ondeck/app/requirements.txt  
+    inflating: /opt/python/ondeck/app/start_here.ipynb  
+     creating: /opt/python/ondeck/app/static/
+     creating: /opt/python/ondeck/app/static/assets/
+    inflating: /opt/python/ondeck/app/static/assets/2010_State_of_the_Union_HOPE.jpg  
+    inflating: /opt/python/ondeck/app/static/assets/Obama_2010_SOTU.jpg  
+    inflating: /opt/python/ondeck/app/static/assets/beer_glamour.jpg  
+   extracting: /opt/python/ondeck/app/static/assets/obama_w_congress.jpg  
+    inflating: /opt/python/ondeck/app/static/assets/sotu_slide_speaking.jpg  
+     creating: /opt/python/ondeck/app/static/css/
+    inflating: /opt/python/ondeck/app/static/css/bootstrap.css  
+    inflating: /opt/python/ondeck/app/static/css/bootstrap.min.css  
+    inflating: /opt/python/ondeck/app/static/css/full.css  
+     creating: /opt/python/ondeck/app/static/fonts/
+    inflating: /opt/python/ondeck/app/static/fonts/glyphicons-halflings-regular.eot  
+    inflating: /opt/python/ondeck/app/static/fonts/glyphicons-halflings-regular.svg  
+    inflating: /opt/python/ondeck/app/static/fonts/glyphicons-halflings-regular.ttf  
+    inflating: /opt/python/ondeck/app/static/fonts/glyphicons-halflings-regular.woff  
+   extracting: /opt/python/ondeck/app/static/fonts/glyphicons-halflings-regular.woff2  
+     creating: /opt/python/ondeck/app/static/js/
+    inflating: /opt/python/ondeck/app/static/js/bootstrap.js  
+    inflating: /opt/python/ondeck/app/static/js/bootstrap.min.js  
+    inflating: /opt/python/ondeck/app/static/js/jquery.js  
+     creating: /opt/python/ondeck/app/templates/
+    inflating: /opt/python/ondeck/app/templates/index.html  
+[2016-02-03T05:38:17.476Z] INFO  [30206] - [Application update/AppDeployStage0/AppDeployPreHook/03deploy.py] : Starting activity...
+[2016-02-03T05:38:18.007Z] INFO  [30206] - [Application update/AppDeployStage0/AppDeployPreHook/03deploy.py] : Activity execution failed, because: --editable=git+http://github.com/biplab-iitb/practNLPTools is not the right format; it must have #egg=Package
+  You are using pip version 7.1.2, however version 8.0.2 is available.
+  You should consider upgrading via the 'pip install --upgrade pip' command.
+  2016-02-03 05:38:18,001 ERROR    Error installing dependencies: Command '/opt/python/run/venv/bin/pip install -r /opt/python/ondeck/app/requirements.txt' returned non-zero exit status 1
+  Traceback (most recent call last):
+    File "/opt/elasticbeanstalk/hooks/appdeploy/pre/03deploy.py", line 22, in main
+      install_dependencies()
+    File "/opt/elasticbeanstalk/hooks/appdeploy/pre/03deploy.py", line 18, in install_dependencies
+      check_call('%s install -r %s' % (os.path.join(APP_VIRTUAL_ENV, 'bin', 'pip'), requirements_file), shell=True)
+    File "/usr/lib64/python2.7/subprocess.py", line 540, in check_call
+      raise CalledProcessError(retcode, cmd)
+  CalledProcessError: Command '/opt/python/run/venv/bin/pip install -r /opt/python/ondeck/app/requirements.txt' returned non-zero exit status 1 (ElasticBeanstalk::ExternalInvocationError)
+caused by: --editable=git+http://github.com/biplab-iitb/practNLPTools is not the right format; it must have #egg=Package
+  You are using pip version 7.1.2, however version 8.0.2 is available.
+  You should consider upgrading via the 'pip install --upgrade pip' command.
+  2016-02-03 05:38:18,001 ERROR    Error installing dependencies: Command '/opt/python/run/venv/bin/pip install -r /opt/python/ondeck/app/requirements.txt' returned non-zero exit status 1
+  Traceback (most recent call last):
+    File "/opt/elasticbeanstalk/hooks/appdeploy/pre/03deploy.py", line 22, in main
+      install_dependencies()
+    File "/opt/elasticbeanstalk/hooks/appdeploy/pre/03deploy.py", line 18, in install_dependencies
+      check_call('%s install -r %s' % (os.path.join(APP_VIRTUAL_ENV, 'bin', 'pip'), requirements_file), shell=True)
+    File "/usr/lib64/python2.7/subprocess.py", line 540, in check_call
+      raise CalledProcessError(retcode, cmd)
+  CalledProcessError: Command '/opt/python/run/venv/bin/pip install -r /opt/python/ondeck/app/requirements.txt' returned non-zero exit status 1 (Executor::NonZeroExitStatus)
+
+
+[2016-02-03T05:38:18.007Z] INFO  [30206] - [Application update/AppDeployStage0/AppDeployPreHook/03deploy.py] : Activity failed.
+[2016-02-03T05:38:18.007Z] INFO  [30206] - [Application update/AppDeployStage0/AppDeployPreHook] : Activity failed.
+[2016-02-03T05:38:18.007Z] INFO  [30206] - [Application update/AppDeployStage0] : Activity failed.
+[2016-02-03T05:38:18.007Z] INFO  [30206] - [Application update] : Completed activity. Result:
+  Application update - Command CMD-AppDeploy failed
+[2016-02-03T05:38:45.027Z] INFO  [30284] - [CMD-TailLogs - stage ] : Starting activity...
+[2016-02-03T05:38:45.293Z] INFO  [30284] - [CMD-TailLogs - stage /AddonsBefore] : Starting activity...
+[2016-02-03T05:38:45.293Z] INFO  [30284] - [CMD-TailLogs - stage /AddonsBefore] : Completed activity.
+[2016-02-03T05:38:45.293Z] INFO  [30284] - [CMD-TailLogs - stage /TailLogs] : Starting activity...
+[2016-02-03T05:38:45.294Z] INFO  [30284] - [CMD-TailLogs - stage /TailLogs/TailLogs] : Starting activity...
+
+
+
+-------------------------------------
+/var/log/eb-commandprocessor.log
+-------------------------------------
+[2016-02-03T05:29:51.468Z] DEBUG [30040] : Setting environment variables..
+[2016-02-03T05:29:51.468Z] INFO  [30040] : Running AddonsBefore for command CMD-TailLogs...
+[2016-02-03T05:29:51.468Z] DEBUG [30040] : Running stages of Command CMD-TailLogs from stage 0 to stage 0...
+[2016-02-03T05:29:51.468Z] INFO  [30040] : Running stage 0 of command CMD-TailLogs...
+[2016-02-03T05:29:51.469Z] DEBUG [30040] : Loaded 1 actions for stage 0.
+[2016-02-03T05:29:51.469Z] INFO  [30040] : Running 1 of 1 actions: TailLogs...
+[2016-02-03T05:29:51.894Z] INFO  [30040] : Running AddonsAfter for command CMD-TailLogs...
+[2016-02-03T05:29:51.894Z] INFO  [30040] : Command CMD-TailLogs succeeded!
+[2016-02-03T05:29:51.895Z] INFO  [30040] : Command processor returning results: 
+{"status":"SUCCESS","api_version":"1.0","results":[{"status":"SUCCESS","msg":"","returncode":0,"events":[{"msg":"[Instance: i-48d06dc8] Successfully finished tailing 6 log(s)","severity":"INFO","timestamp":1454477391895}]}]}
+[2016-02-03T05:38:13.376Z] DEBUG [30206] : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2016-02-03T05:38:13.377Z] DEBUG [30206] : Checking if the command processor should execute...
+[2016-02-03T05:38:13.378Z] DEBUG [30206] : Checking whether the command is applicable to instance (i-48d06dc8)..
+[2016-02-03T05:38:13.378Z] INFO  [30206] : Command is applicable to this instance (i-48d06dc8)..
+[2016-02-03T05:38:13.378Z] DEBUG [30206] : Checking if the received command stage is valid..
+[2016-02-03T05:38:13.378Z] INFO  [30206] : No stage_num in command. Valid stage..
+[2016-02-03T05:38:13.379Z] INFO  [30206] : Received command CMD-AppDeploy: {"execution_data":"{\"leader_election\":\"true\"}","instance_ids":["i-48d06dc8"],"data":"manifest_1454477889091","command_name":"CMD-AppDeploy","api_version":"1.0","resource_name":"AWSEBAutoScalingGroup","request_id":"4a7be1ed-ca38-11e5-a538-7d3ef56e683d","command_timeout":"600"}
+[2016-02-03T05:38:13.379Z] INFO  [30206] : Command processor should execute command.
+[2016-02-03T05:38:13.379Z] DEBUG [30206] : Storing current stage..
+[2016-02-03T05:38:13.379Z] DEBUG [30206] : Stage_num does not exist. Not saving null stage. Returning..
+[2016-02-03T05:38:13.379Z] INFO  [30206] : Executing Application update
+[2016-02-03T05:38:13.379Z] INFO  [30206] : Executing command: CMD-AppDeploy...
+[2016-02-03T05:38:13.379Z] DEBUG [30206] : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2016-02-03T05:38:13.379Z] DEBUG [30206] : Refreshing metadata..
+[2016-02-03T05:38:13.645Z] DEBUG [30206] : Refreshed environment metadata.
+[2016-02-03T05:38:13.645Z] DEBUG [30206] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_ContainerConfigFileContent||commands..
+[2016-02-03T05:38:13.646Z] DEBUG [30206] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_API||_Commands..
+[2016-02-03T05:38:13.646Z] INFO  [30206] : Found enabled addons: ["logpublish"].
+[2016-02-03T05:38:13.647Z] INFO  [30206] : Updating Command definition of addon logpublish.
+[2016-02-03T05:38:13.648Z] DEBUG [30206] : Loaded definition of Command CMD-AppDeploy.
+[2016-02-03T05:38:13.648Z] INFO  [30206] : Executing command CMD-AppDeploy activities...
+[2016-02-03T05:38:13.648Z] DEBUG [30206] : Setting environment variables..
+[2016-02-03T05:38:13.648Z] INFO  [30206] : Running AddonsBefore for command CMD-AppDeploy...
+[2016-02-03T05:38:13.648Z] DEBUG [30206] : Running stages of Command CMD-AppDeploy from stage 0 to stage 1...
+[2016-02-03T05:38:13.648Z] INFO  [30206] : Running stage 0 of command CMD-AppDeploy...
+[2016-02-03T05:38:13.648Z] INFO  [30206] : Running leader election...
+[2016-02-03T05:38:13.910Z] INFO  [30206] : Instance is Leader.
+[2016-02-03T05:38:13.911Z] DEBUG [30206] : Loaded 7 actions for stage 0.
+[2016-02-03T05:38:13.911Z] INFO  [30206] : Running 1 of 7 actions: InfraWriteConfig...
+[2016-02-03T05:38:13.913Z] INFO  [30206] : Running 2 of 7 actions: InfraWriteApp1...
+[2016-02-03T05:38:13.917Z] INFO  [30206] : Running 3 of 7 actions: InfraWriteApp2...
+[2016-02-03T05:38:15.251Z] INFO  [30206] : Running 4 of 7 actions: EbExtensionPreBuild...
+[2016-02-03T05:38:15.546Z] INFO  [30206] : Running 5 of 7 actions: AppDeployPreHook...
+[2016-02-03T05:38:18.007Z] ERROR [30206] : Command execution failed: Activity failed. (ElasticBeanstalk::ActivityFatalError)
+caused by: --editable=git+http://github.com/biplab-iitb/practNLPTools is not the right format; it must have #egg=Package
+  You are using pip version 7.1.2, however version 8.0.2 is available.
+  You should consider upgrading via the 'pip install --upgrade pip' command.
+  2016-02-03 05:38:18,001 ERROR    Error installing dependencies: Command '/opt/python/run/venv/bin/pip install -r /opt/python/ondeck/app/requirements.txt' returned non-zero exit status 1
+  Traceback (most recent call last):
+    File "/opt/elasticbeanstalk/hooks/appdeploy/pre/03deploy.py", line 22, in main
+      install_dependencies()
+    File "/opt/elasticbeanstalk/hooks/appdeploy/pre/03deploy.py", line 18, in install_dependencies
+      check_call('%s install -r %s' % (os.path.join(APP_VIRTUAL_ENV, 'bin', 'pip'), requirements_file), shell=True)
+    File "/usr/lib64/python2.7/subprocess.py", line 540, in check_call
+      raise CalledProcessError(retcode, cmd)
+  CalledProcessError: Command '/opt/python/run/venv/bin/pip install -r /opt/python/ondeck/app/requirements.txt' returned non-zero exit status 1 (ElasticBeanstalk::ExternalInvocationError)
+caused by: --editable=git+http://github.com/biplab-iitb/practNLPTools is not the right format; it must have #egg=Package
+  You are using pip version 7.1.2, however version 8.0.2 is available.
+  You should consider upgrading via the 'pip install --upgrade pip' command.
+  2016-02-03 05:38:18,001 ERROR    Error installing dependencies: Command '/opt/python/run/venv/bin/pip install -r /opt/python/ondeck/app/requirements.txt' returned non-zero exit status 1
+  Traceback (most recent call last):
+    File "/opt/elasticbeanstalk/hooks/appdeploy/pre/03deploy.py", line 22, in main
+      install_dependencies()
+    File "/opt/elasticbeanstalk/hooks/appdeploy/pre/03deploy.py", line 18, in install_dependencies
+      check_call('%s install -r %s' % (os.path.join(APP_VIRTUAL_ENV, 'bin', 'pip'), requirements_file), shell=True)
+    File "/usr/lib64/python2.7/subprocess.py", line 540, in check_call
+      raise CalledProcessError(retcode, cmd)
+  CalledProcessError: Command '/opt/python/run/venv/bin/pip install -r /opt/python/ondeck/app/requirements.txt' returned non-zero exit status 1 (Executor::NonZeroExitStatus)
+
+
+[2016-02-03T05:38:18.007Z] ERROR [30206] : Command CMD-AppDeploy failed!
+[2016-02-03T05:38:18.008Z] INFO  [30206] : Command processor returning results: 
+{"status":"FAILURE","api_version":"1.0","results":[{"status":"FAILURE","msg":"(TRUNCATED)...)\n  File \"/usr/lib64/python2.7/subprocess.py\", line 540, in check_call\n    raise CalledProcessError(retcode, cmd)\nCalledProcessError: Command '/opt/python/run/venv/bin/pip install -r /opt/python/ondeck/app/requirements.txt' returned non-zero exit status 1. \nHook /opt/elasticbeanstalk/hooks/appdeploy/pre/03deploy.py failed. For more detail, check /var/log/eb-activity.log using console or EB CLI","returncode":1,"events":[{"msg":"Your requirements.txt is invalid. Snapshot your logs for details.","severity":"ERROR","timestamp":1454477897},{"msg":"Error installing dependencies: Command '/opt/python/run/venv/bin/pip install -r /opt/python/ondeck/app/requirements.txt' returned non-zero exit status 1","severity":"SYSTEM","timestamp":1454477897}]}],"truncated":"true"}
+[2016-02-03T05:38:45.025Z] DEBUG [30284] : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2016-02-03T05:38:45.025Z] DEBUG [30284] : Checking if the command processor should execute...
+[2016-02-03T05:38:45.026Z] DEBUG [30284] : Checking whether the command is applicable to instance (i-48d06dc8)..
+[2016-02-03T05:38:45.026Z] INFO  [30284] : Command is applicable to this instance (i-48d06dc8)..
+[2016-02-03T05:38:45.026Z] DEBUG [30284] : Checking if the received command stage is valid..
+[2016-02-03T05:38:45.026Z] INFO  [30284] : No stage_num in command. Valid stage..
+[2016-02-03T05:38:45.026Z] INFO  [30284] : Received command CMD-TailLogs: {"execution_data":"{\"aws_access_key_id\":\"ASIAIM7NE6LFWX7ZEZHQ\",\"signature\":\"BwDrgAAN7t+cNYW38vvAebdl2+Y=\",\"security_token\":\"AQoDYXdzED8asAIXtTkPlC8caVzBlAF9tNssgQkcF149p\\\/sIWZ6Rc4YdLi3+MOyGImyByNvZd\\\/+1oyfJAYzBAWOAfwyopmotMurHOpv98TCkWsEwqyDTQGxMTgp9Mh63zRzSASlISNB5DCMvNAHa\\\/\\\/XXJ7YgYp1ZXi22+BFG2h\\\/TyPmnT96Fvi+NYxcscmus4mEWostyiOspzJClwobBgtUxdHBQ\\\/J\\\/hgg2NP8LryK5XhOjyZUO\\\/\\\/kTJmCaw8qgHyXWJJj8XCZQJRPjQBcz2cyzK03EXopC2AfpWS1HZXer\\\/trZlAkdwAUS2464KVD1iMSMhHnhFgOsuGManZVri8iZcMdPduZA+ETIJjDveXI0BuL3kdJ0XAeTyGFP2mD1S7qXZ0alpBN2l1bJjLjZ88oV31yYWCLY8J2bhIOKkxrUF\",\"policy\":\"eyJleHBpcmF0aW9uIjoiMjAxNi0wMi0wM1QwNjowODo0Mi4zMzVaIiwiY29uZGl0aW9ucyI6W1sic3RhcnRzLXdpdGgiLCIkeC1hbXotbWV0YS10aW1lX3N0YW1wIiwiIl0sWyJzdGFydHMtd2l0aCIsIiR4LWFtei1tZXRhLXB1Ymxpc2hfbWVjaGFuaXNtIiwiIl0sWyJzdGFydHMtd2l0aCIsIiRrZXkiLCJyZXNvdXJjZXNcL2Vudmlyb25tZW50c1wvbG9nc1wvIl0sWyJzdGFydHMtd2l0aCIsIiR4LWFtei1tZXRhLWJhdGNoX2lkIiwiIl0sWyJzdGFydHMtd2l0aCIsIiR4LWFtei1tZXRhLWZpbGVfbmFtZSIsIiJdLFsic3RhcnRzLXdpdGgiLCIkeC1hbXotc2VjdXJpdHktdG9rZW4iLCIiXSxbInN0YXJ0cy13aXRoIiwiJENvbnRlbnQtVHlwZSIsIiJdLFsiZXEiLCIkYnVja2V0IiwiZWxhc3RpY2JlYW5zdGFsay11cy1lYXN0LTEtNDk1NTMzMTM4NTQ1Il0sWyJlcSIsIiRhY2wiLCJwcml2YXRlIl1dfQ==\"}","instance_ids":["i-48d06dc8"],"data":"6249057e-ca38-11e5-bd4d-5360184b5897","command_name":"CMD-TailLogs","api_version":"1.0","resource_name":"AWSEBAutoScalingGroup","request_id":"6249057e-ca38-11e5-bd4d-5360184b5897","command_timeout":"600"}
+[2016-02-03T05:38:45.026Z] INFO  [30284] : Command processor should execute command.
+[2016-02-03T05:38:45.026Z] DEBUG [30284] : Storing current stage..
+[2016-02-03T05:38:45.026Z] DEBUG [30284] : Stage_num does not exist. Not saving null stage. Returning..
+[2016-02-03T05:38:45.027Z] INFO  [30284] : Executing CMD-TailLogs - stage 
+[2016-02-03T05:38:45.027Z] INFO  [30284] : Executing command: CMD-TailLogs...
+[2016-02-03T05:38:45.027Z] DEBUG [30284] : Reading config file: /etc/elasticbeanstalk/.aws-eb-stack.properties
+[2016-02-03T05:38:45.027Z] DEBUG [30284] : Refreshing metadata..
+[2016-02-03T05:38:45.291Z] DEBUG [30284] : Refreshed environment metadata.
+[2016-02-03T05:38:45.291Z] DEBUG [30284] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_ContainerConfigFileContent||commands..
+[2016-02-03T05:38:45.291Z] DEBUG [30284] : Retrieving metadata for key: AWS::ElasticBeanstalk::Ext||_API||_Commands..
+[2016-02-03T05:38:45.292Z] INFO  [30284] : Found enabled addons: ["logpublish"].
+[2016-02-03T05:38:45.293Z] INFO  [30284] : Updating Command definition of addon logpublish.
+[2016-02-03T05:38:45.293Z] DEBUG [30284] : Loaded definition of Command CMD-TailLogs.
+[2016-02-03T05:38:45.293Z] INFO  [30284] : Executing command CMD-TailLogs activities...
+[2016-02-03T05:38:45.293Z] DEBUG [30284] : Setting environment variables..
+[2016-02-03T05:38:45.293Z] INFO  [30284] : Running AddonsBefore for command CMD-TailLogs...
+[2016-02-03T05:38:45.293Z] DEBUG [30284] : Running stages of Command CMD-TailLogs from stage 0 to stage 0...
+[2016-02-03T05:38:45.293Z] INFO  [30284] : Running stage 0 of command CMD-TailLogs...
+[2016-02-03T05:38:45.293Z] DEBUG [30284] : Loaded 1 actions for stage 0.
+[2016-02-03T05:38:45.293Z] INFO  [30284] : Running 1 of 1 actions: TailLogs...
+
+
+
