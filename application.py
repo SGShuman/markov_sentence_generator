@@ -4,6 +4,7 @@ import cPickle as pickle
 from _code.markov_dict import MarkovDict
 from _code.markov_chain import MarkovChain
 
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -25,4 +26,4 @@ if __name__ == '__main__':
     md = MarkovDict('data/obama_corpus.txt', 3, gtype='syntax_pos')
     mc = MarkovChain(md.api, neighbor_dict)
 
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=False)
